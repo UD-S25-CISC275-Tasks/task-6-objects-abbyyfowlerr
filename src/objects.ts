@@ -10,7 +10,16 @@ export function makeBlankQuestion(
     name: string,
     type: QuestionType
 ): Question {
-    return {};
+    return {
+        id: id, 
+        name: name, 
+        type: type, 
+        body: "", 
+        expected: "", 
+        options: [], 
+        points: 1, 
+        published: false 
+    };
 }
 
 /**
@@ -21,7 +30,10 @@ export function makeBlankQuestion(
  * HINT: Look up the `trim` and `toLowerCase` functions.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    return false;
+    const copyQuestion = {...question}
+    return (
+        copyQuestion.expected.trim().toLowerCase() === answer.trim().toLowerCase()
+    );
 }
 
 /**
@@ -31,7 +43,11 @@ export function isCorrect(question: Question, answer: string): boolean {
  * be exactly one of the options.
  */
 export function isValid(question: Question, answer: string): boolean {
-    return false;
+    const copyQuestion = {...question};
+    if (copyQuestion.type === 'short_answer_question') {
+        return true;
+    }
+    return (copyQuestion.options.includes(answer));
 }
 
 /**
@@ -41,7 +57,8 @@ export function isValid(question: Question, answer: string): boolean {
  * name "My First Question" would become "9: My First Q".
  */
 export function toShortForm(question: Question): string {
-    return "";
+    const copyQuestion = {...question};
+    return copyQuestion.id.toString() + ": " + copyQuestion.name.substring(0,10);
 }
 
 /**
